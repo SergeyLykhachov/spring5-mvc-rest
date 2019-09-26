@@ -60,8 +60,15 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setLastname(customerDTO.getLastname());
             }
 
-            return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
+            CustomerDTO returnDto = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
+            returnDto.setCustomerUrl("/api/v1/customer/" + id);
+            return returnDto;
         }).orElseThrow(RuntimeException::new); //todo implement better exception handling;
+    }
+
+    @Override
+    public void deleteCustomerById(Long id) {
+        this.customerRepository.deleteById(id);
     }
 
     private CustomerDTO saveAndReturnDTO(Customer customer) {
